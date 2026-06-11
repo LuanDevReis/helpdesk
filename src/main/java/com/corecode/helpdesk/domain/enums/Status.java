@@ -1,9 +1,9 @@
 package com.corecode.helpdesk.domain.enums;
 
 
-public enum Perfil {
+public enum Status {
 
-    ADMIN(0, "ROLE_ADMIN"), CLIENTE(1, "ROLE_CLIENTE"), TECNICO(2, "ROLE_TECNICO");
+    ABERTO(0, "ABERTO"), ANDAMENTO(1, "ANDAMENTO"), ENCERRADO(2, "ENCERRADO");
 
     public Integer getCodigo() {
         return codigo;
@@ -16,21 +16,21 @@ public enum Perfil {
     private Integer codigo;
     private String descricao;
 
-    private Perfil(Integer codigo, String descricao){
+    private Status(Integer codigo, String descricao){
         this.codigo = codigo;
         this.descricao = descricao;
     }
 
-    public static Perfil toEnum(Integer cod){
+    public static Status toEnum(Integer cod){
         if (cod == null){
             return null;
         }
-        for(Perfil x : Perfil.values()){
+        for(Status x : Status.values()){
             if (cod.equals(x.getCodigo())){
                 return x;
             }
         }
 
-        throw new IllegalArgumentException("Perfil inválido");
+        throw new IllegalArgumentException("Status inválido");
     }
 }

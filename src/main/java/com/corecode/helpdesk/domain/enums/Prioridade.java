@@ -1,9 +1,9 @@
 package com.corecode.helpdesk.domain.enums;
 
 
-public enum Status {
+public enum Prioridade {
 
-    ABERTO(0, "ABERTO"), ANDAMENTO(1, "ANDAMENTO"), ENCERRADO(2, "ENCERRADO");
+    BAIXA(0, "BAIXA"), MEDIA(1, "MEDIA"), ALTA(2, "ALTA");
 
     public Integer getCodigo() {
         return codigo;
@@ -16,21 +16,21 @@ public enum Status {
     private Integer codigo;
     private String descricao;
 
-    private Status(Integer codigo, String descricao){
+    private Prioridade(Integer codigo, String descricao){
         this.codigo = codigo;
         this.descricao = descricao;
     }
 
-    public static Status toEnum(Integer cod){
+    public static Prioridade toEnum(Integer cod){
         if (cod == null){
             return null;
         }
-        for(Status x : Status.values()){
+        for(Prioridade x : Prioridade.values()){
             if (cod.equals(x.getCodigo())){
                 return x;
             }
         }
 
-        throw new IllegalArgumentException("Status inválido");
+        throw new IllegalArgumentException("Prioridade inválido");
     }
 }
