@@ -1,6 +1,7 @@
 package com.corecode.helpdesk.domain;
 
 import com.corecode.helpdesk.domain.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 
@@ -12,6 +13,7 @@ public class Tecnico extends Pessoa{
 
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tecnico")
     private List<Chamado> chamados = new ArrayList<>();
 
@@ -21,8 +23,6 @@ public class Tecnico extends Pessoa{
 
     public Tecnico(Integer id, String nome, String cpf, String email, String senha) {
         super(id, nome, cpf, email, senha);
-        addPerfis(Perfil.TECNICO);
-
     }
 
     public List<Chamado> getChamados() {
@@ -32,4 +32,6 @@ public class Tecnico extends Pessoa{
     public void setChamados(List<Chamado> chamados) {
         this.chamados = chamados;
     }
+
+
 }

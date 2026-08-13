@@ -13,6 +13,9 @@ import java.util.Objects;
 public class Chamado implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public Chamado() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
