@@ -3,24 +3,12 @@ package com.corecode.helpdesk.domain;
 import com.corecode.helpdesk.domain.enums.Prioridade;
 import com.corecode.helpdesk.domain.enums.Status;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-@JsonPropertyOrder({
-        "id",
-        "dataAbertura",
-        "dataFechamento",
-        "prioridade",
-        "status",
-        "titulo",
-        "observacoes",
-        "tecnico",
-        "cliente"
-})
 
 @Entity
 public class Chamado implements Serializable {

@@ -2,12 +2,26 @@ package com.corecode.helpdesk.domain.dtos;
 
 import com.corecode.helpdesk.domain.Chamado;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import jakarta.validation.constraints.NotNull;
 
 
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@JsonPropertyOrder({
+        "id",
+        "dataAbertura",
+        "dataFechamento",
+        "prioridade",
+        "status",
+        "titulo",
+        "observacoes",
+        "tecnico",
+        "cliente",
+        "nomeTecnico",
+        "nomeCliente"
+})
 public class ChamadoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
