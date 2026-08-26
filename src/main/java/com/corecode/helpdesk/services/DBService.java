@@ -11,6 +11,7 @@ import com.corecode.helpdesk.repositories.ChamadoRepository;
 import com.corecode.helpdesk.repositories.ClienteRepository;
 import com.corecode.helpdesk.repositories.TecnicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,39 +25,41 @@ public class DBService {
     private ClienteRepository clienteRepository;
     @Autowired
     private ChamadoRepository chamadoRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public void instanciaDB(){
 
         System.out.println(">>> ENTROU NO INSTANCIA DB <<<");
 
 
-        Tecnico tec1 = new Tecnico(null, "Valdir cezar", "126.963.070-91", "valdir@email.com", "123");
+        Tecnico tec1 = new Tecnico(null, "Valdir cezar", "126.963.070-91", "valdir@email.com", encoder.encode("123"));
         tec1.addPerfis(Perfil.ADMIN);
-        Tecnico tec2 = new Tecnico(null, "Carlos Eduardo", "599.134.580-56", "carlos@email.com", "123");
+        Tecnico tec2 = new Tecnico(null, "Carlos Eduardo", "599.134.580-56", "carlos@email.com", encoder.encode("123"));
         tec2.addPerfis(Perfil.TECNICO);
 
-        Tecnico tec3 = new Tecnico(null, "Marcos Silva", "117.992.110-02", "marcos@email.com", "123");
+        Tecnico tec3 = new Tecnico(null, "Marcos Silva", "117.992.110-02", "marcos@email.com", encoder.encode("123"));
         tec3.addPerfis(Perfil.TECNICO);
 
-        Tecnico tec4 = new Tecnico(null, "Fernanda Souza", "505.100.780-52", "fernanda@email.com", "123");
+        Tecnico tec4 = new Tecnico(null, "Fernanda Souza", "505.100.780-52", "fernanda@email.com", encoder.encode("123"));
         tec4.addPerfis(Perfil.TECNICO);
 
-        Tecnico tec5 = new Tecnico(null, "Rafael Oliveira", "948.042.990-09", "rafael@email.com", "123");
+        Tecnico tec5 = new Tecnico(null, "Rafael Oliveira", "948.042.990-09", "rafael@email.com", encoder.encode("123"));
         tec5.addPerfis(Perfil.TECNICO);
 
-        Tecnico tec6 = new Tecnico(null, "Juliana Costa", "063.636.160-85", "juliana@email.com", "123");
+        Tecnico tec6 = new Tecnico(null, "Juliana Costa", "063.636.160-85", "juliana@email.com", encoder.encode("123"));
         tec6.addPerfis(Perfil.TECNICO);
 
-        Cliente cli1 = new Cliente(null, "Linux Torvalds", "236.701.640-22", "torvalds@mail.com", "123");
-        Cliente cli2 = new Cliente(null, "Ana Paula", "509.876.280-46", "ana@mail.com", "123");
+        Cliente cli1 = new Cliente(null, "Linux Torvalds", "236.701.640-22", "torvalds@mail.com", encoder.encode("123"));
+        Cliente cli2 = new Cliente(null, "Ana Paula", "509.876.280-46", "ana@mail.com", encoder.encode("123"));
 
-        Cliente cli3 = new Cliente(null, "Joao Santos", "755.432.820-44", "joao@mail.com", "123");
+        Cliente cli3 = new Cliente(null, "Joao Santos", "755.432.820-44", "joao@mail.com", encoder.encode("123"));
 
-        Cliente cli4 = new Cliente(null, "Maria Oliveira", "463.635.450-80", "maria@mail.com", "123");
+        Cliente cli4 = new Cliente(null, "Maria Oliveira", "463.635.450-80", "maria@mail.com", encoder.encode("123"));
 
-        Cliente cli5 = new Cliente(null, "Pedro Henrique", "485.463.950-47", "pedro@mail.com", "123");
+        Cliente cli5 = new Cliente(null, "Pedro Henrique", "485.463.950-47", "pedro@mail.com", encoder.encode("123"));
 
-        Cliente cli6 = new Cliente(null, "Camila Ferreira", "098.683.750-45", "camila@mail.com", "123");
+        Cliente cli6 = new Cliente(null, "Camila Ferreira", "098.683.750-45", "camila@mail.com", encoder.encode("123"));
 
         Chamado c1 = new Chamado(null,
                 Prioridade.MEDIA,
