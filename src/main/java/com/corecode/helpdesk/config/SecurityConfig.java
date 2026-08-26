@@ -2,10 +2,14 @@ package com.corecode.helpdesk.config;
 
 
 import com.corecode.helpdesk.security.JWTAuthenticationFilter;
+import com.corecode.helpdesk.security.JWTAuthorizationFilter;
 import com.corecode.helpdesk.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,6 +19,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 
 
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,6 +28,7 @@ import java.util.Arrays;
 
 @EnableWebSecurity
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
     private JWTUtil jwtUtil;
@@ -30,7 +36,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationManager authenticationManager, UserDetailsService userDetailsService) throws Exception {
 
 
 
@@ -54,6 +60,14 @@ public class SecurityConfig {
                                 authenticationManager,
                                 jwtUtil
                         ))
+                .addFilterBefore(
+                        new JWTAuthorizationFilter(
+                                authenticationManager,
+                                jwtUtil,
+                                userDetailsService
+                        ),
+                        AuthorizationFilter.class
+                )
                 .build();
     }
 
@@ -70,6 +84,19 @@ public class SecurityConfig {
                         "PUT",
                         "DELETE",
                         "OPTIONS"
+                )
+        );
+
+        configuration.setAllowedHeaders(
+                Arrays.asList(
+                        "Authorization",
+                        "Content-Type"
+                )
+        );
+
+        configuration.setExposedHeaders(
+                Arrays.asList(
+                        "Authorization"
                 )
         );
 
