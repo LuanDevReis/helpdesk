@@ -24,10 +24,6 @@ public class JWTUtil {
         SecretKey key = Keys.hmacShaKeyFor(
                 secret.getBytes(StandardCharsets.UTF_8)
         );
-        System.out.println("========== GERANDO JWT ==========");
-        System.out.println("SECRET RECEBIDA: " + secret);
-        System.out.println("TAMANHO DA SECRET: " + secret.length());
-        System.out.println("ALGORITMO: HS512");
 
         return Jwts.builder()
                 .subject(email)
