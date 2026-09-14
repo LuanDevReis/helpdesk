@@ -11,11 +11,11 @@ import com.corecode.helpdesk.services.exceptions.ObjectnotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +34,17 @@ public class ChamadoService {
     }
 
     public Page<Chamado> findAll(Pageable pageable){
+
+        if (pageable.getPageSize() > 50) {
+            pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    50,
+                    pageable.getSort()
+            );
+        }
+
         return repository.findAll(pageable);
+
     }
 
     public Chamado create(@Valid ChamadoDTO objDTO) {
