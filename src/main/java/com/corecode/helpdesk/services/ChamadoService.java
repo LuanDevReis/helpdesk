@@ -10,6 +10,8 @@ import com.corecode.helpdesk.repositories.ChamadoRepository;
 import com.corecode.helpdesk.services.exceptions.ObjectnotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -31,9 +33,8 @@ public class ChamadoService {
         return obj.orElseThrow(()-> new ObjectnotFoundException("Objeto não encontrado! ID: " + id));
     }
 
-    public List<Chamado> findAll() {
-        return repository.findAll();
-
+    public Page<Chamado> findAll(Pageable pageable){
+        return repository.findAll(pageable);
     }
 
     public Chamado create(@Valid ChamadoDTO objDTO) {

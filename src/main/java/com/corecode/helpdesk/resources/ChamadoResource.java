@@ -5,13 +5,14 @@ import com.corecode.helpdesk.domain.dtos.ChamadoDTO;
 import com.corecode.helpdesk.services.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/chamados")
@@ -27,10 +28,14 @@ public class ChamadoResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<ChamadoDTO>> findAll(){
-        List<Chamado> list = service.findAll();
-        List<ChamadoDTO> listDTO = list.stream().map(obj -> new ChamadoDTO(obj)).collect(Collectors.toList());
-        return ResponseEntity.ok().body(listDTO);
+    public ResponseEntity<Page<ChamadoDTO>> findAll(
+            @PageableDefault(size = 10, page = 0)Pageable pageable){
+
+        Page<Chamado> page = service.findAll(pageable);
+        Page<ChamadoDTO> pageDTO = page.map(obj -> new ChamadoDTO(obj));
+
+        return ResponseEntity.ok().body(pageDTO);
+
     }
 
     @PostMapping
