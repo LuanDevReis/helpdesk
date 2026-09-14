@@ -2,6 +2,7 @@ package com.corecode.helpdesk.resources;
 
 import com.corecode.helpdesk.domain.Chamado;
 import com.corecode.helpdesk.domain.dtos.ChamadoDTO;
+import com.corecode.helpdesk.domain.dtos.PageResponse;
 import com.corecode.helpdesk.services.ChamadoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +30,14 @@ public class ChamadoResource {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ChamadoDTO>> findAll(
+    public ResponseEntity<PageResponse<ChamadoDTO>> findAll(
             @PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
 
         Page<Chamado> page = service.findAll(pageable);
         Page<ChamadoDTO> pageDTO = page.map(obj -> new ChamadoDTO(obj));
+        PageResponse<ChamadoDTO> response = new PageResponse<>(pageDTO);
 
-        return ResponseEntity.ok().body(pageDTO);
+        return ResponseEntity.ok().body(response);
 
     }
 
