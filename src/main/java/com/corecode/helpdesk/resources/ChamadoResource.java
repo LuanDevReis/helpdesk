@@ -5,6 +5,7 @@ import com.corecode.helpdesk.domain.dtos.ChamadoDTO;
 import com.corecode.helpdesk.domain.dtos.PageResponse;
 import com.corecode.helpdesk.services.ChamadoService;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,12 @@ public class ChamadoResource {
 
     @GetMapping
     public ResponseEntity<PageResponse<ChamadoDTO>> findAll(
-            @PageableDefault(size = 10, page = 0, sort = "id", direction = Sort.Direction.DESC)Pageable pageable){
+            @ParameterObject
+            @PageableDefault(
+                    size = 10,
+                    page = 0,
+                    sort = "id",
+                    direction = Sort.Direction.DESC) Pageable pageable) {
 
         Page<Chamado> page = service.findAll(pageable);
         Page<ChamadoDTO> pageDTO = page.map(obj -> new ChamadoDTO(obj));
