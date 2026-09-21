@@ -1,0 +1,63 @@
+name: Helpdesk CI
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+  pull_request:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v5
+
+      - name: Configurar Java 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '25'
+          cache: 'maven'
+
+      - name: Executar testes
+        run: ./mvnw clean test
+
+      - name: Gerar pacote da aplicação
+        run: ./mvnw package -DskipTests
+
+      - name: Login no Docker Hub
+        if: github.event_name == 'push'
+        uses: docker/login-action@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build e push da imagem Docker - develop
+        if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
+        uses: docker/build-push-action@v7
+        with:
+            context: .
+            push: true
+            tags: |
+              lreis393/helpdesk-api:dev
+              lreis393/helpdesk-api:${{ github.sha }}
+
+      - name: Build e push da imagem Docker - main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v7
+        with:
+            context: .
+            push: true
+            tags: |
+              lreis393/helpdesk-api:latest
+              lreis393/helpdesk-api:${{ github.sha }}
