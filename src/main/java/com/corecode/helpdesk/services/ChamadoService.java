@@ -27,6 +27,8 @@ public class ChamadoService {
     private TecnicoService tecnicoService;
     @Autowired
     private ClienteService clienteService;
+    @Autowired
+    private NotificacaoClientService notificacaoClientService;
 
     public Chamado findById(Integer id){
         Optional<Chamado> obj = repository.findById(id);
@@ -48,8 +50,15 @@ public class ChamadoService {
     }
 
     public Chamado create(@Valid ChamadoDTO objDTO) {
-        return repository.save(newChamado(objDTO));
+        Chamado chamado = newChamado(objDTO);
 
+        Chamado chamadoSalvo = repository.save(chamado);
+
+        notificacaoClientService.notificarChamadoCriado(
+                chamadoSalvo.getCliente().getEmail(),
+                chamadoSalvo.getTitulo()
+        );
+      return chamadoSalvo;
     }
 
     public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
