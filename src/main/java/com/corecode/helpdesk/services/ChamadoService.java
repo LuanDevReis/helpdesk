@@ -3,6 +3,7 @@ package com.corecode.helpdesk.services;
 import com.corecode.helpdesk.domain.Chamado;
 import com.corecode.helpdesk.domain.Cliente;
 import com.corecode.helpdesk.domain.Tecnico;
+import com.corecode.helpdesk.domain.dtos.ChamadoCriadoEventDTO;
 import com.corecode.helpdesk.domain.dtos.ChamadoDTO;
 import com.corecode.helpdesk.domain.enums.Prioridade;
 import com.corecode.helpdesk.domain.enums.Status;
@@ -29,6 +30,8 @@ public class ChamadoService {
     private ClienteService clienteService;
     @Autowired
     private NotificacaoClientService notificacaoClientService;
+    @Autowired
+    private ChamadoEventPublisher chamadoEventPublisher;
 
     public Chamado findById(Integer id){
         Optional<Chamado> obj = repository.findById(id);
@@ -54,11 +57,16 @@ public class ChamadoService {
 
         Chamado chamadoSalvo = repository.save(chamado);
 
-        notificacaoClientService.notificarChamadoCriado(
+        ChamadoCriadoEventDTO event = new ChamadoCriadoEventDTO(
+                chamadoSalvo.getId(),
+                chamadoSalvo.getTitulo(),
                 chamadoSalvo.getCliente().getEmail(),
-                chamadoSalvo.getTitulo()
+                "Seu chamado foi criado com sucesso: " + chamadoSalvo.getTitulo()
         );
-      return chamadoSalvo;
+
+        chamadoEventPublisher.publicarChamadoCriado(event);
+
+        return chamadoSalvo;
     }
 
     public Chamado update(Integer id, @Valid ChamadoDTO objDTO) {
