@@ -61,15 +61,4 @@ public class ChamadoResource {
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
 }
