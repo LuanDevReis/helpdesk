@@ -17,6 +17,7 @@ jobs:
 
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      NOTIFICACAO_SERVICE_URL: http://localhost:8081
 
     steps:
       - name: Checkout do código
