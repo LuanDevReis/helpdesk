@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,6 +18,11 @@ public class OpenApiConfig {
                 .title("Sistema de Chamados API")
                 .version("1.0.0")
                 .description("API didatica para testar sistema de chamados para TI."))
+                .addServersItem(
+                        new Server()
+                                .url("https://helpdesk-production-2929.up.railway.app")
+                                .description("Railway")
+                )
                 .components(new Components()
                         .addSecuritySchemes("bearer-key",
                                 new SecurityScheme()
