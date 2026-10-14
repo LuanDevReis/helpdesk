@@ -1,7 +1,7 @@
 package com.corecode.helpdesk.domain;
 
 import com.corecode.helpdesk.domain.dtos.ClienteDTO;
-import com.corecode.helpdesk.domain.dtos.TecnicoDTO;
+
 import com.corecode.helpdesk.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -9,7 +9,7 @@ import jakarta.persistence.OneToMany;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Entity
 public class Cliente extends Pessoa{
@@ -35,7 +35,7 @@ public class Cliente extends Pessoa{
         this.cpf = obj.getCpf();
         this.email = obj.getEmail();
         this.senha = obj.getSenha();
-        this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+        obj.getPerfis().forEach(this::addPerfis);
         this.dataCriacao = obj.getDataCriacao();
     }
 

@@ -30,16 +30,23 @@ public abstract class Pessoa implements Serializable {
     protected String email;
     protected String senha;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "PERFIS")
-    protected Set<Integer> perfis = new HashSet<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @CollectionTable(name = "PERFIS")
+//    protected Set<Integer> perfis = new HashSet<>();
+@OneToMany(
+        mappedBy = "pessoa",
+        cascade = CascadeType.ALL,
+        orphanRemoval = true,
+        fetch = FetchType.EAGER
+)
+protected Set<PessoaPerfil> perfis = new HashSet<>();
 
     @JsonFormat(pattern = "dd/MM/yyyy")
     protected LocalDate dataCriacao = LocalDate.now();
 
     public Pessoa(){
         super();
-        addPerfis(Perfil.CLIENTE);
+//        addPerfis(Perfil.CLIENTE);
     }
 
     public Pessoa(Integer id, String nome, String cpf, String email, String senha) {
@@ -49,7 +56,7 @@ public abstract class Pessoa implements Serializable {
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
-        addPerfis(Perfil.CLIENTE);
+//        addPerfis(Perfil.CLIENTE);
     }
 
     public Integer getId() {
@@ -93,11 +100,13 @@ public abstract class Pessoa implements Serializable {
     }
 
     public Set<Perfil> getPerfis() {
-        return perfis.stream().map(Perfil::toEnum).collect(Collectors.toSet());
+        return perfis.stream()
+                .map(PessoaPerfil::getPerfil)
+                .collect(Collectors.toSet());
     }
 
     public void addPerfis(Perfil perfil) {
-        this.perfis.add(perfil.getCodigo());
+        this.perfis.add(new PessoaPerfil(this, perfil));
     }
 
     public LocalDate getDataCriacao() {
